@@ -1,10 +1,3 @@
-//
-//  Dockerfile.swift
-//  EphemeralKeyServer
-//
-//  Created by 엄희랑 on 11/3/25.
-//
-
 # ✅ Vapor 서버용 Dockerfile (Render 전용)
 FROM swift:6.0-amazonlinux2 AS build
 WORKDIR /app
@@ -24,4 +17,5 @@ COPY --from=build /app/Resources /run/Resources
 EXPOSE 8080
 
 CMD ["./EphemeralKeyServer"]
+
 
