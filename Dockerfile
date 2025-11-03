@@ -1,26 +1,24 @@
-# ===============================
-# ✅ EphemeralKeyServer (Render 배포용 완성 버전)
-# ===============================
+# ✅ EphemeralKeyServer - Render용 단일 스테이지 Dockerfile
 
-# 1️⃣ 빌드 단계 — Swift로 Vapor 서버 빌드
-FROM swift:6.0-amazonlinux2 AS build
+# Swift가 들어 있는 베이스 이미지 하나만 사용
+FROM swift:6.0-amazonlinux2
+
+# 작업 디렉토리
 WORKDIR /app
 
-# 모든 프로젝트 파일 복사 후 빌드
+# 프로젝트 전체 복사
 COPY . .
+
+# 릴리즈 빌드
 RUN swift build -c release --disable-sandbox
 
-# 2️⃣ 런타임 단계 — 빌드된 서버 실행
-FROM amazonlinux:2
-WORKDIR /run
+# 실행 디렉토리로 이동
+WORKDIR /app/.build/release
 
-# ✅ 릴리즈된 실행 파일만 복사 (리소스 폴더 제외)
-COPY --from=build /app/.build/release /run
-
-# ✅ 서버 실행 포트
+# Vapor 서버 포트
 EXPOSE 8080
 
-# ✅ Vapor 서버 실행 명령
+# 서버 실행 (Package.swift 제품 이름이 EphemeralKeyServer 라고 가정)
 CMD ["./EphemeralKeyServer"]
 
 
